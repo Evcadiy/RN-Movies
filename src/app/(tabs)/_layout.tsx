@@ -4,8 +4,8 @@ import { Tabs } from "expo-router"
 const TabsLayout = () => {
 	return (
 		<Tabs tabBar={props => <TabBar {...props} />}>
-			<Tabs.Screen name="home/index" options={{ title: "Home" }} />
-			<Tabs.Screen name="movie-list/index" options={{ title: "Movie list" }} />
+			<Tabs.Screen name="movie-list" options={{ headerShown: false }} />
+			<Tabs.Screen name="person-list" options={{ headerShown: false }} />
 		</Tabs>
 	)
 }

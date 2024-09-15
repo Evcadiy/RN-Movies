@@ -4,8 +4,9 @@ import Animated, {
 	withSpring,
 	withTiming
 } from "react-native-reanimated"
-import MaterialIcons from "@expo/vector-icons/MaterialIcons"
+import MovieIcon from "@expo/vector-icons/MaterialIcons"
 import Feather from "@expo/vector-icons/Feather"
+import PersonIcon from "@expo/vector-icons/MaterialIcons"
 
 type Props = {
 	isFocused: boolean
@@ -19,15 +20,18 @@ export default function TabBarItemIcon({ isFocused, name }: Props) {
 			{
 				scale: withSpring(isFocused ? 1.2 : 1)
 			}
-		]
+		],
+		marginLeft: name === "person-list" ? 5 : 0
 	}))
 
 	function Icon() {
 		switch (name) {
-			case "home/index":
+			case "home":
 				return <Feather name="home" size={24} color="black" />
-			case "movie-list/index":
-				return <MaterialIcons name="movie" size={24} color="black" />
+			case "movie-list":
+				return <MovieIcon name="movie" size={24} color="black" />
+			case "person-list":
+				return <PersonIcon name="person-search" size={26} color="black" />
 			default:
 				return null
 		}
