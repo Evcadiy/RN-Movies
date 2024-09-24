@@ -37,7 +37,7 @@ export default function TabBar({
 	}
 
 	return (
-		<View className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white p-2">
+		<View className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-neutral-800 p-2">
 			<View
 				className="flex-row items-center justify-between gap-2"
 				onLayout={onTabBarLayout}
@@ -82,7 +82,7 @@ export default function TabBar({
 
 					return (
 						<Pressable
-							className="flex items-center justify-center rounded-full px-8 py-4"
+							className="flex items-center justify-center rounded-full px-8  py-4"
 							accessibilityState={isFocused ? { selected: true } : {}}
 							accessibilityLabel={options.tabBarAccessibilityLabel}
 							testID={options.tabBarTestID}

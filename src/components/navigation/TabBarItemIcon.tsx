@@ -27,11 +27,11 @@ export default function TabBarItemIcon({ isFocused, name }: Props) {
 	function Icon() {
 		switch (name) {
 			case "home":
-				return <Feather name="home" size={24} color="black" />
+				return <Feather name="home" size={24} color="white" />
 			case "movie-list":
-				return <MovieIcon name="movie" size={24} color="black" />
+				return <MovieIcon name="movie" size={24} color="white" />
 			case "person-list":
-				return <PersonIcon name="person-search" size={26} color="black" />
+				return <PersonIcon name="person-search" size={26} color="white" />
 			default:
 				return null
 		}
