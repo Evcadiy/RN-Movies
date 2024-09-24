@@ -1,13 +1,13 @@
 import { useLocalSearchParams } from "expo-router"
-import { View, Text } from "react-native"
+import { View, Text, SafeAreaView } from "react-native"
 
 const MoviePage = () => {
 	const { id } = useLocalSearchParams()
 
 	return (
-		<View>
+		<SafeAreaView>
 			<Text>Movie {id}</Text>
-		</View>
+		</SafeAreaView>
 	)
 }
 
