@@ -1,8 +1,8 @@
 import { FlatList, SafeAreaView, ScrollView, Text, View } from "react-native"
 import CustomList from "./CastomList"
-import { useGetMoviesByTopRatedQuery } from "../../redux/movie/endpoints/moviesBy"
 import { ERoutes } from "@/config/ERoutes"
 import MovieItem from "./MovieItem"
+import { useGetMoviesByTopRatedQuery } from "@/redux/movie/endpoints/moviesBy"
 
 const TopRatedMoviesList = ({
 	width,

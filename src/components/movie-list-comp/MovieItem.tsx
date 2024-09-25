@@ -1,5 +1,6 @@
 import { ERoutes } from "@/config/ERoutes"
 import { useRouter } from "expo-router"
+import { memo, useCallback } from "react"
 import { Image, TouchableWithoutFeedback, View } from "react-native"
 const MovieItem = ({
 	poster_path,
@@ -13,12 +14,12 @@ const MovieItem = ({
 	height: number
 }) => {
 	const router = useRouter()
-	const goToMovie = () => {
+	const goToMovie = useCallback(() => {
 		router.push(`${ERoutes.MOVIE_LIST}/${id}`)
-	}
+	}, [id, router])
 
 	return (
-		<View key={id} className="justify-center items-center">
+		<View className="justify-center items-center">
 			<TouchableWithoutFeedback onPress={goToMovie}>
 				<Image
 					source={{
@@ -35,4 +36,4 @@ const MovieItem = ({
 	)
 }
 
-export default MovieItem
+export default memo(MovieItem)

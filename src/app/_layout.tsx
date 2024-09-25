@@ -1,8 +1,8 @@
 import { Provider } from "react-redux"
 import "../global.css"
 import { Stack } from "expo-router"
-import store from "@/redux/store"
 import { SafeAreaProvider } from "react-native-safe-area-context"
+import store from "@/redux/store"
 export default function Layout() {
 	return (
 		<SafeAreaProvider>
