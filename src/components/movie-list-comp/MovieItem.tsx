@@ -18,8 +18,6 @@ const MovieItem = ({
 		router.push(`${ERoutes.MOVIE_LIST}/${id}`)
 	}, [id, router])
 
-	console.log(id)
-
 	return (
 		<View className="justify-center items-center">
 			<TouchableWithoutFeedback onPress={goToMovie}>
