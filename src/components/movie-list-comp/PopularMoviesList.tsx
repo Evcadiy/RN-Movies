@@ -1,5 +1,4 @@
 import { Text, SafeAreaView } from "react-native"
-import { useGetMoviesByPopularQuery } from "../../redux/movie/endpoints/moviesBy"
 import CustomList from "./CastomList"
 import { ERoutes } from "@/config/ERoutes"
 import CastomCarousel from "@/components/UI/CastomCarousel"
@@ -10,6 +9,7 @@ import {
 	isSmallPhone,
 	isTablet
 } from "@/constants/deviceDimensions"
+import { useGetMoviesByPopularQuery } from "@/redux/movie/endpoints/moviesBy"
 const PopularMoviesList = () => {
 	const { data: movieList, isSuccess, isLoading } = useGetMoviesByPopularQuery()
 	const movies = movieList?.results

@@ -1,13 +1,13 @@
 import { FlatList, SafeAreaView, Text, View } from "react-native"
 import MovieItem from "./MovieItem"
 import CustomList from "./CastomList"
-import { TMovieList } from "../../redux/movie/types"
 import {
 	DEVICE_HEIGHT,
 	DEVICE_WIDTH,
 	isSmallPhone,
 	isTablet
 } from "@/constants/deviceDimensions"
+import { TMovieList } from "@/redux/movie/types"
 
 interface IMoviesScrollList {
 	useMoviesQuery: () => unknown

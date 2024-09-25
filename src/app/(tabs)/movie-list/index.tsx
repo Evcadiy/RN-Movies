@@ -14,8 +14,8 @@ const MovieListPage = () => {
 		<SafeAreaView className="flex-1">
 			<ScrollView>
 				<View className="pb-24">
-					<PopularMoviesList />
-					<MoviesScrollList
+					{/* <PopularMoviesList /> */}
+					{/* <MoviesScrollList
 						useMoviesQuery={useGetMoviesByTopRatedQuery}
 						title="Top Rated"
 						href={
@@ -30,7 +30,7 @@ const MovieListPage = () => {
 						href={
 							ERoutes.MOVIE_LIST + ERoutes.FULL_LIST + EMoviesEndpoints.UPCOMING
 						}
-					/>
+					/> */}
 					<MoviesScrollList
 						useMoviesQuery={useGetMoviesByNowPlayingQuery}
 						title="Now Playing"
