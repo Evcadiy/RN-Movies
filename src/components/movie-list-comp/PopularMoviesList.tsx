@@ -12,7 +12,15 @@ import {
 import { useGetMoviesByPopularQuery } from "@/redux/movie/endpoints/moviesBy"
 import { EMoviesEndpoints } from "@/redux/movie/enums"
 const PopularMoviesList = () => {
-	const { data: movieList, isSuccess, isLoading } = useGetMoviesByPopularQuery()
+	const {
+		data: movieList,
+		isSuccess,
+		isLoading
+	} = useGetMoviesByPopularQuery({ page: 1 }) || {
+		data: { results: [] },
+		isSuccess: false,
+		isLoading: true
+	}
 	const movies = movieList?.results
 
 	if (isLoading) {

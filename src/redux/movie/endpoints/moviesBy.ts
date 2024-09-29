@@ -4,17 +4,21 @@ import { TMovieList } from "../types"
 
 export const moviesBy = moviesApi.injectEndpoints({
 	endpoints: builder => ({
-		getMoviesByPopular: builder.query<TMovieList, void>({
-			query: () => EMoviesEndpoints.POPULAR
+		getMoviesByPopular: builder.query<TMovieList, { page?: number }>({
+			query: ({ page } = { page: 1 }) =>
+				`${EMoviesEndpoints.POPULAR}?page=${page}`
 		}),
-		getMoviesByTopRated: builder.query<TMovieList, void>({
-			query: () => EMoviesEndpoints.TOP_RATED
+		getMoviesByTopRated: builder.query<TMovieList, { page?: number }>({
+			query: ({ page } = { page: 1 }) =>
+				`${EMoviesEndpoints.TOP_RATED}?page=${page}`
 		}),
-		getMoviesByUpcoming: builder.query<TMovieList, void>({
-			query: () => EMoviesEndpoints.UPCOMING
+		getMoviesByUpcoming: builder.query<TMovieList, { page?: number }>({
+			query: ({ page } = { page: 1 }) =>
+				`${EMoviesEndpoints.UPCOMING}?page=${page}`
 		}),
-		getMoviesByNowPlaying: builder.query<TMovieList, void>({
-			query: () => EMoviesEndpoints.NOW_PLAYING
+		getMoviesByNowPlaying: builder.query<TMovieList, { page?: number }>({
+			query: ({ page } = { page: 1 }) =>
+				`${EMoviesEndpoints.NOW_PLAYING}?page=${page}`
 		})
 	}),
 	overrideExisting: false

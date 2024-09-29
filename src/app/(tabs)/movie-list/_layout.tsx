@@ -26,7 +26,7 @@ const MovieListLayout = () => {
 				name="full-list/[category]"
 				options={{
 					title: "Full List",
-					presentation: "modal",
+					// presentation: "modal",
 					animation: "fade"
 				}}
 			/>

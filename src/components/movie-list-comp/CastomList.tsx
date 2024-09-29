@@ -1,7 +1,7 @@
 import { isSmallPhone } from "@/constants/deviceDimensions"
 import { Link } from "expo-router"
 import { ReactNode } from "react"
-import { View, Text, ScrollView } from "react-native"
+import { View, Text } from "react-native"
 
 const CustomList = ({
 	children,
@@ -31,7 +31,7 @@ const CustomList = ({
 					</Link>
 				)}
 			</View>
-			<ScrollView>{children}</ScrollView>
+			{children}
 		</View>
 	)
 }
