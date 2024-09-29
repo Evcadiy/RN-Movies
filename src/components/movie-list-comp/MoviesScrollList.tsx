@@ -15,52 +15,55 @@ import {
 	isTablet
 } from "@/constants/deviceDimensions"
 
-interface IMoviesScrollList {
-	useMoviesQuery: () => unknown
-	title: string
-	href: string
+interface IMoviesScrollListProps {
+	useMoviesQuery: () => {
+		data?: TMovieList
+		isSuccess: boolean
+		isLoading: boolean
+	}
+	title?: string
+	href?: string
+	horizontal?: boolean
 }
 
 const MoviesScrollList = ({
 	useMoviesQuery,
 	title,
-	href
-}: IMoviesScrollList) => {
-	const {
-		data: movieList,
-		isSuccess,
-		isLoading
-	} = useMoviesQuery() as {
-		data?: TMovieList
-		isSuccess: boolean
-		isLoading: boolean
-	}
+	href,
+	horizontal = true
+}: IMoviesScrollListProps) => {
+	const { data, isSuccess, isLoading } = useMoviesQuery()
 
-	const movies = useMemo(() => movieList?.results || [], [movieList])
+	const movies = useMemo(() => data?.results || [], [data])
 
-	const dataProvider = useMemo(() => {
-		return new DataProvider((r1, r2) => r1.id !== r2.id).cloneWithRows(movies)
-	}, [movies])
-
+	const dataProvider = useMemo(
+		() => new DataProvider((r1, r2) => r1.id !== r2.id).cloneWithRows(movies),
+		[movies]
+	)
 	const layoutProvider = useMemo(
 		() =>
 			new LayoutProvider(
 				_index => "NORMAL",
 				(type, dim) => {
 					if (type === "NORMAL") {
-						const itemWidth = isTablet
-							? DEVICE_WIDTH * 0.18
-							: isSmallPhone
-							? DEVICE_WIDTH * 0.25
-							: DEVICE_WIDTH * 0.3
-						const itemHeight = DEVICE_HEIGHT * 0.2
+						const itemWidth = horizontal
+							? isTablet
+								? DEVICE_WIDTH * 0.18
+								: isSmallPhone
+								? DEVICE_WIDTH * 0.25
+								: DEVICE_WIDTH * 0.3
+							: DEVICE_WIDTH * 0.43
+
+						const itemHeight = horizontal
+							? DEVICE_HEIGHT * 0.2
+							: DEVICE_HEIGHT * 0.3
 
 						dim.width = itemWidth + 14
-						dim.height = itemHeight
+						dim.height = itemHeight + 14
 					}
 				}
 			),
-		[]
+		[horizontal]
 	)
 
 	const rowRenderer = (
@@ -73,13 +76,15 @@ const MoviesScrollList = ({
 				<MovieItem
 					{...data}
 					width={
-						isTablet
-							? DEVICE_WIDTH * 0.18
-							: isSmallPhone
-							? DEVICE_WIDTH * 0.25
-							: DEVICE_WIDTH * 0.3
+						horizontal
+							? isTablet
+								? DEVICE_WIDTH * 0.18
+								: isSmallPhone
+								? DEVICE_WIDTH * 0.25
+								: DEVICE_WIDTH * 0.3
+							: DEVICE_WIDTH * 0.43
 					}
-					height={DEVICE_HEIGHT * 0.2}
+					height={horizontal ? DEVICE_HEIGHT * 0.2 : DEVICE_HEIGHT * 0.3}
 				/>
 			</View>
 		)
@@ -98,13 +103,19 @@ const MoviesScrollList = ({
 			{movies.length > 0 && (
 				<CustomList title={title} href={href}>
 					<RecyclerListView
-						style={{ width: DEVICE_WIDTH, height: DEVICE_HEIGHT * 0.2 }}
+						style={{
+							flex: 1,
+							width: DEVICE_WIDTH,
+							height: horizontal ? DEVICE_HEIGHT * 0.2 : DEVICE_HEIGHT,
+							padding: horizontal ? 0 : 12
+						}}
 						layoutProvider={layoutProvider}
 						dataProvider={dataProvider}
 						rowRenderer={rowRenderer}
-						isHorizontal={true}
+						isHorizontal={horizontal}
 						scrollViewProps={{
-							showsHorizontalScrollIndicator: false
+							showsHorizontalScrollIndicator: horizontal,
+							showsVerticalScrollIndicator: !horizontal
 						}}
 					/>
 				</CustomList>

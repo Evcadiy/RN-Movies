@@ -9,8 +9,8 @@ const CustomList = ({
 	href
 }: {
 	children: ReactNode
-	title: string
-	href: string
+	title?: string
+	href?: string
 }) => {
 	return (
 		<View>
@@ -20,12 +20,16 @@ const CustomList = ({
 				>
 					{title}
 				</Text>
-				<Link
-					className={`color-yellow-600 ${isSmallPhone ? "text-lg" : "text-xl"}`}
-					href={href}
-				>
-					See all
-				</Link>
+				{href && (
+					<Link
+						className={`color-yellow-600 ${
+							isSmallPhone ? "text-lg" : "text-xl"
+						}`}
+						href={href}
+					>
+						See all
+					</Link>
+				)}
 			</View>
 			<ScrollView>{children}</ScrollView>
 		</View>
