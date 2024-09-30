@@ -1,15 +1,11 @@
-import { Animated, SafeAreaView, ScrollView } from "react-native"
+import { Animated, SafeAreaView, ScrollView, View } from "react-native"
 import PopularMoviesList from "@/components/movie-list-comp/PopularMoviesList"
-import { View } from "react-native"
 import MoviesScrollList from "@/components/movie-list-comp/MoviesScrollList"
-import {
-	useGetMoviesByNowPlayingQuery,
-	useGetMoviesByTopRatedQuery,
-	useGetMoviesByUpcomingQuery
-} from "@/redux/movie/endpoints/moviesBy"
+import { useGetMoviesByCategoryQuery } from "@/redux/movie/endpoints/moviesBy"
 import { ERoutes } from "@/config/ERoutes"
 import { EMoviesEndpoints } from "@/redux/movie/enums"
 import { useEffect, useMemo, useRef } from "react"
+
 const MovieListPage = () => {
 	const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -21,9 +17,18 @@ const MovieListPage = () => {
 		}).start()
 	}, [fadeAnim])
 
-	const { data: topRated } = useGetMoviesByTopRatedQuery()
-	const { data: upcoming } = useGetMoviesByUpcomingQuery()
-	const { data: nowPlaying } = useGetMoviesByNowPlayingQuery()
+	const { data: topRated } = useGetMoviesByCategoryQuery({
+		category: EMoviesEndpoints.TOP_RATED,
+		page: 1
+	})
+	const { data: upcoming } = useGetMoviesByCategoryQuery({
+		category: EMoviesEndpoints.UPCOMING,
+		page: 1
+	})
+	const { data: nowPlaying } = useGetMoviesByCategoryQuery({
+		category: EMoviesEndpoints.NOW_PLAYING,
+		page: 1
+	})
 
 	const topRatedMovies = useMemo(() => topRated?.results, [topRated])
 	const upcomingMovies = useMemo(() => upcoming?.results, [upcoming])

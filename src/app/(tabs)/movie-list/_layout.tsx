@@ -25,9 +25,7 @@ const MovieListLayout = () => {
 			<Stack.Screen
 				name="full-list/[category]"
 				options={{
-					title: "Full List",
-					// presentation: "modal",
-					animation: "fade"
+					title: "Full List"
 				}}
 			/>
 		</Stack>
