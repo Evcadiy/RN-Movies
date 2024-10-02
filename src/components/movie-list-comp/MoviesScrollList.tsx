@@ -1,111 +1,133 @@
-import { useMemo } from "react"
-import { SafeAreaView, Text, View } from "react-native"
-import {
-	RecyclerListView,
-	DataProvider,
-	LayoutProvider
-} from "recyclerlistview"
+import { useCallback, useMemo, useState } from "react"
+import { FlatList, SafeAreaView, View } from "react-native"
 import MovieItem from "./MovieItem"
 import CustomList from "./CastomList"
-import { TMovie, TMovieList } from "@/redux/movie/types"
+import { TMovie } from "@/redux/movie/types"
 import {
 	DEVICE_HEIGHT,
 	DEVICE_WIDTH,
 	isSmallPhone,
 	isTablet
 } from "@/constants/deviceDimensions"
+import Pagination from "../UI/Pagination"
 
-interface IMoviesScrollList {
-	useMoviesQuery: () => unknown
-	title: string
-	href: string
+interface IMoviesScrollListProps {
+	movies: TMovie[]
+	title?: string
+	href?: string
+	horizontal?: boolean
+	onLoadMore?: () => void
+	isLoading?: boolean
+	hasMore?: boolean
 }
 
 const MoviesScrollList = ({
-	useMoviesQuery,
+	movies,
 	title,
-	href
-}: IMoviesScrollList) => {
-	const {
-		data: movieList,
-		isSuccess,
-		isLoading
-	} = useMoviesQuery() as {
-		data?: TMovieList
-		isSuccess: boolean
-		isLoading: boolean
-	}
+	href,
+	horizontal = true,
+	onLoadMore,
+	isLoading,
+	hasMore
+}: IMoviesScrollListProps) => {
+	const [isLoadMorePressed, setIsLoadMorePressed] = useState(false)
 
-	const movies = useMemo(() => movieList?.results || [], [movieList])
-
-	const dataProvider = useMemo(() => {
-		return new DataProvider((r1, r2) => r1.id !== r2.id).cloneWithRows(movies)
-	}, [movies])
-
-	const layoutProvider = useMemo(
-		() =>
-			new LayoutProvider(
-				_index => "NORMAL",
-				(type, dim) => {
-					if (type === "NORMAL") {
-						const itemWidth = isTablet
-							? DEVICE_WIDTH * 0.18
-							: isSmallPhone
-							? DEVICE_WIDTH * 0.25
-							: DEVICE_WIDTH * 0.3
-						const itemHeight = DEVICE_HEIGHT * 0.2
-
-						dim.width = itemWidth + 14
-						dim.height = itemHeight
-					}
-				}
-			),
-		[]
-	)
-
-	const rowRenderer = (
-		_type: string | number,
-		data: TMovie,
-		_index: number
-	) => {
-		return (
-			<View>
+	const renderMovieItem = useCallback(
+		({ item }: { item: TMovie }) => (
+			<View style={{ margin: isTablet ? 20 : 7 }}>
 				<MovieItem
-					{...data}
+					{...item}
 					width={
-						isTablet
-							? DEVICE_WIDTH * 0.18
+						horizontal
+							? isTablet
+								? DEVICE_WIDTH * 0.18
+								: isSmallPhone
+								? DEVICE_WIDTH * 0.25
+								: DEVICE_WIDTH * 0.3
+							: isTablet
+							? DEVICE_WIDTH * 0.2
 							: isSmallPhone
-							? DEVICE_WIDTH * 0.25
-							: DEVICE_WIDTH * 0.3
+							? DEVICE_WIDTH * 0.38
+							: DEVICE_WIDTH * 0.43
 					}
-					height={DEVICE_HEIGHT * 0.2}
+					height={
+						horizontal
+							? isTablet
+								? DEVICE_HEIGHT * 0.2
+								: isSmallPhone
+								? DEVICE_HEIGHT * 0.2
+								: DEVICE_HEIGHT * 0.2
+							: isTablet
+							? DEVICE_HEIGHT * 0.23
+							: isSmallPhone
+							? DEVICE_HEIGHT * 0.3
+							: DEVICE_HEIGHT * 0.3
+					}
 				/>
 			</View>
-		)
-	}
+		),
+		[horizontal]
+	)
 
-	if (isLoading) {
-		return <Text>Loading...</Text>
-	}
+	const renderFooter = useMemo(() => {
+		if (!isLoadMorePressed && hasMore) {
+			return (
+				<Pagination
+					onLoadMore={() => {
+						setIsLoadMorePressed(true)
+						onLoadMore && onLoadMore()
+					}}
+					isLoading={isLoading}
+					hasMore={hasMore}
+				/>
+			)
+		}
+		return null
+	}, [isLoading, hasMore, isLoadMorePressed, onLoadMore])
 
-	if (!isSuccess) {
-		return <Text>Error</Text>
-	}
+	const getItemLayout = useCallback(
+		(_data: unknown, index: number) => ({
+			length: horizontal ? DEVICE_HEIGHT * 0.2 : DEVICE_HEIGHT * 0.3,
+			offset: (horizontal ? DEVICE_HEIGHT * 0.2 : DEVICE_HEIGHT * 0.3) * index,
+			index
+		}),
+		[horizontal]
+	)
 
 	return (
 		<SafeAreaView>
 			{movies.length > 0 && (
 				<CustomList title={title} href={href}>
-					<RecyclerListView
-						style={{ width: DEVICE_WIDTH, height: DEVICE_HEIGHT * 0.2 }}
-						layoutProvider={layoutProvider}
-						dataProvider={dataProvider}
-						rowRenderer={rowRenderer}
-						isHorizontal={true}
-						scrollViewProps={{
-							showsHorizontalScrollIndicator: false
+					<FlatList
+						data={movies}
+						renderItem={renderMovieItem}
+						keyExtractor={item => item.id.toString()}
+						horizontal={horizontal}
+						showsHorizontalScrollIndicator={horizontal}
+						showsVerticalScrollIndicator={!horizontal}
+						contentContainerStyle={{
+							marginHorizontal: !horizontal ? "auto" : null
 						}}
+						style={{
+							width: DEVICE_WIDTH,
+							height: horizontal
+								? isTablet
+									? DEVICE_HEIGHT * 0.22
+									: isSmallPhone
+									? DEVICE_HEIGHT * 0.22
+									: DEVICE_HEIGHT * 0.22
+								: isTablet
+								? DEVICE_HEIGHT * 0.9
+								: isSmallPhone
+								? DEVICE_HEIGHT * 0.78
+								: DEVICE_HEIGHT * 0.8
+						}}
+						numColumns={horizontal ? 1 : isTablet ? 4 : 2}
+						getItemLayout={getItemLayout}
+						initialNumToRender={4}
+						ListFooterComponent={renderFooter}
+						onEndReached={isLoadMorePressed ? onLoadMore : null}
+						onEndReachedThreshold={isLoadMorePressed ? 0.5 : null}
 					/>
 				</CustomList>
 			)}

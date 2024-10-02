@@ -1,15 +1,14 @@
-import { TMDB_API_TOKEN } from "react-native-dotenv"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { TMDB_API_TOKEN } from "react-native-dotenv"
 
-export const moviesApi = createApi({
-	reducerPath: "moviesApi",
+export const personApi = createApi({
+	reducerPath: "personApi",
 	baseQuery: fetchBaseQuery({
-		baseUrl: "https://api.themoviedb.org/3/movie",
-
+		baseUrl: "https://api.themoviedb.org/3/person",
 		prepareHeaders(headers) {
 			headers.set("Authorization", `Bearer ${TMDB_API_TOKEN}`)
 		}
 	}),
-	tagTypes: ["Movies"],
+	tagTypes: ["Person"],
 	endpoints: () => ({})
 })

@@ -9,10 +9,17 @@ import {
 	isSmallPhone,
 	isTablet
 } from "@/constants/deviceDimensions"
-import { useGetMoviesByPopularQuery } from "@/redux/movie/endpoints/moviesBy"
 import { EMoviesEndpoints } from "@/redux/movie/enums"
+import { useGetMoviesByCategoryQuery } from "@/redux/movie/endpoints/moviesBy"
 const PopularMoviesList = () => {
-	const { data: movieList, isSuccess, isLoading } = useGetMoviesByPopularQuery()
+	const {
+		data: movieList,
+		isSuccess,
+		isLoading
+	} = useGetMoviesByCategoryQuery({
+		category: EMoviesEndpoints.POPULAR,
+		page: 1
+	})
 	const movies = movieList?.results
 
 	if (isLoading) {

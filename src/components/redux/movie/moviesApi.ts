@@ -5,7 +5,6 @@ export const moviesApi = createApi({
 	reducerPath: "moviesApi",
 	baseQuery: fetchBaseQuery({
 		baseUrl: "https://api.themoviedb.org/3/movie",
-
 		prepareHeaders(headers) {
 			headers.set("Authorization", `Bearer ${TMDB_API_TOKEN}`)
 		}
