@@ -124,9 +124,10 @@ const MoviesScrollList = ({
 						}}
 						numColumns={horizontal ? 1 : isTablet ? 4 : 2}
 						getItemLayout={getItemLayout}
+						initialNumToRender={4}
 						ListFooterComponent={renderFooter}
 						onEndReached={isLoadMorePressed ? onLoadMore : null}
-						onEndReachedThreshold={isLoadMorePressed ? 1 : null}
+						onEndReachedThreshold={isLoadMorePressed ? 0.5 : null}
 					/>
 				</CustomList>
 			)}

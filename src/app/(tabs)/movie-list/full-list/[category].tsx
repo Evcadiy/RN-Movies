@@ -6,24 +6,18 @@ import { useLocalSearchParams } from "expo-router"
 import { SafeAreaView } from "react-native"
 import { TMovie } from "@/redux/movie/types"
 import BackArrow from "@/components/full-list/BackArrow"
+import useLoadMore from "@/hooks/useLoadMore"
 
 const CategoryFullListPage = () => {
 	const { category } = useLocalSearchParams()
 	const categoryRoute = `/${category}` as EMoviesEndpoints
 
-	const [currentPage, setCurrentPage] = useState(1)
 	const [movies, setMovies] = useState<TMovie[]>([])
-
+	const { currentPage, loadMore } = useLoadMore({ data: movies })
 	const { data, isSuccess, isLoading } = useGetMoviesByCategoryQuery({
 		category: categoryRoute,
 		page: currentPage
 	})
-
-	const loadMoreMovies = () => {
-		if (!isLoading && data && data.results.length > 0) {
-			setCurrentPage(prev => prev + 1)
-		}
-	}
 
 	useEffect(() => {
 		if (data && isSuccess) {
@@ -42,7 +36,7 @@ const CategoryFullListPage = () => {
 			<MoviesScrollList
 				movies={movies}
 				horizontal={false}
-				onLoadMore={loadMoreMovies}
+				onLoadMore={loadMore}
 				isLoading={isLoading}
 				hasMore={data && currentPage < data.total_pages}
 			/>
